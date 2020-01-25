@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css';
+import './fonts/fonts.css';
+
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports';
+
+import { BrowserRouter } from 'react-router-dom';
+
+import useWindowSize from './hooks/useWindowSize';
+
+import Main from './components/Main';
+
+// Configure Amplify
+Amplify.configure(awsconfig);
+
+const App = () => {
+
+	// App states
+	const device = useWindowSize().width > 992 ? "desktop" : "mobile"
+
+	return (
+		<BrowserRouter>
+			<Main device={device} />
+		</BrowserRouter>
+	);
 }
 
 export default App;
