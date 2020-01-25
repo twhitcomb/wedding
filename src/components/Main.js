@@ -1,17 +1,16 @@
 import React from 'react';
 
-import { Switch } from 'react-router-dom';
-
 import Header from './Header';
 
-const Main = (props) => {
+import { useRoutes } from 'hookrouter';
+import routes from '../router';
+
+const Main = () => {
     
     return (
         <>
-            <Header device={props.device}/>
-            <Switch>
-                
-            </Switch>
+            <Header />
+            {useRoutes(routes)}
         </>
     );
 }

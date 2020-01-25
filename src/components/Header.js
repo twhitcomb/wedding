@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 
 import styled from 'styled-components';
-import { Container, Row, Collapse, Nav, Navbar, NavItem, NavLink, Button, NavbarBrand, NavbarToggler } from 'reactstrap';
+import { Container, Row, Collapse, Nav, Navbar, NavItem, Button, NavbarToggler } from 'reactstrap';
 
-const Header = (props) => {
+import useWindowWidth from '../hooks/useWindowWidth';
+import { A } from 'hookrouter';
+
+const Header = () => {
+
+    const device = useWindowWidth() > 992 ? "desktop" : "mobile";
 
     /**
      * Navbar state
@@ -11,15 +16,11 @@ const Header = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
-    // Device Type
-    const device = props.device;
-
     /**
      * Styled Components
      */
     // Toggler
     const ToggleWrapper = styled.div`
-        padding: 0;
         button {
             border: none;
         }
@@ -59,8 +60,8 @@ const Header = (props) => {
     /**
      * Helper Components
      */
-    const Title = () => <TitleWrapper device={device} className={device === "mobile" ? 'col-8' : ''}><NavbarBrand href='/home'>Ty and Tiffany</NavbarBrand></TitleWrapper>
-    const RSVP = () => <RSVPWrapper device={device} className={device === "mobile" ? 'col-12' : ''}><Button><NavLink href='/rsvp'>RSVP</NavLink></Button></RSVPWrapper>
+    const Title = () => <TitleWrapper device={device} className={device === "mobile" ? 'col-8' : ''}><A className='navbar-brand' href='/home'>Ty and Tiffany</A></TitleWrapper>
+    const RSVPButton = () => <RSVPWrapper device={device} className={device === "mobile" ? 'col-12' : ''}><Button><A className='nav-link' href='/rsvp'>RSVP</A></Button></RSVPWrapper>
 
     /**
      * Navigation
@@ -70,38 +71,38 @@ const Header = (props) => {
             <Navbar dark expand='lg'>
                 <Container> 
                 {
-                    props.device === "mobile" ? 
+                    device === "mobile" ? 
                         <Row className='d-flex m-auto w-100'>
-                            <ToggleWrapper className='col-2 align-self-center'>
+                            <ToggleWrapper className='col-2 align-self-center p-0'>
                                 <NavbarToggler onClick={toggle} />
                             </ToggleWrapper>
                             <Title />
-                            <RSVP />
+                            <RSVPButton />
                         </Row>
                     : null
                 }
                     <Collapse isOpen={isOpen} navbar>
                         <Nav className='row d-flex m-auto w-100' navbar>    
                             <NavItem className='col-12 col-lg-2 align-self-center text-center'>
-                                <NavLink href='/home'>Home</NavLink>
+                                <A className='nav-link' href='/home'>Home</A>
                             </NavItem>
                             <NavItem className='col-12 col-lg-2 align-self-center text-center'>
-                                <NavLink href='/registry'>Registry</NavLink>
+                                <A className='nav-link' href='/registry'>Registry</A>
                             </NavItem>
                             { 
-                                props.device === "desktop" ? 
+                                device === "desktop" ? 
                                     <NavItem className='col-4 align-self-center'>
                                         <Title />
                                     </NavItem>
                                 : null
                             }
                             <NavItem className='col-12 col-lg-2 align-self-center text-center'>
-                                <NavLink href='/travel'>Travel</NavLink>
+                                <A className='nav-link' href='/travel'>Travel</A>
                             </NavItem>
                             { 
-                                props.device === "desktop" ? 
+                                device === "desktop" ? 
                                     <NavItem className='col-2 align-self-center'>
-                                        <RSVP />
+                                        <RSVPButton />
                                     </NavItem>
                                 : null
                             }
