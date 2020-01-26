@@ -28,6 +28,9 @@ const Header = () => {
 
     // Nav
     const NavWrapper = styled.div`
+        position: fixed;
+        width: 100%;
+        z-index: 100;
         nav {
             background-color: var(--burgundy);
         }

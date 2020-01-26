@@ -1,10 +1,10 @@
 import React from 'react';
 
-const RSVP = () => {
+const Invites = () => {
 
     return (
         <div></div>
     );
 }
 
-export default RSVP;
+export default Invites;
