@@ -15,6 +15,7 @@ const Home = () => {
 
     const Background = styled.div`
         position: fixed;
+        top: 0;
         width: 105vw;
         height: 100vh;
         background-size: cover;

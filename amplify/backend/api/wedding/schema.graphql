@@ -1,46 +1,50 @@
-type Group @model {
+type Group 
+@model {
 	id: ID!
 	name: String
-	number: Integer!
-	guests: [Guest] @connection(keyName: "byGroup", fields: ["id"])
+	number: Int!
+	guests: [Guest]! @connection(keyName: "byGroup", fields: ["id"])
 }
 
-type Guest @model {
-	@key(name: "byGroup", fields: ["group_id"])
+type Guest 
+@model 
+@key(name: "byGroup", fields: ["groupId"]) {
 	id: ID!
-	group_id: ID!
-	meal_id: ID!
-	first_name: String!
-	first_name_preferred: String
-	last_name: String!
-	group: Group! @connection(fields: ["group_id"])
+	groupId: ID!
+	mealId: ID!
+	firstName: String!
+	firstNamePreferred: String
+	lastName: String!
+	group: Group! @connection(fields: ["groupId"])
 	email: AWSEmail
 	phone: AWSPhone
 	address: String!
 	rsvp: Boolean
-	rsvp_datetime: AWSDateTime
-	direct_invite: Boolean!
-	plus_one_eligible: Boolean!
-	plus_one: Guest @connection
-	meal: Meal @connection(fields: ["meal_id"])
+	rsvpDatetime: AWSDateTime
+	directInvite: Boolean!
+	plusOneEligible: Boolean!
+	plusOne: Guest @connection
+	meal: Meal @connection(fields: ["mealId"])
 }
 
-type Meal @model {
-	@key(name: "byMealType", fields: ["type_id"])
+type Meal 
+@model
+@key(name: "byMealType", fields: ["typeId"]) {
 	id: ID!
-	type_id: ID!
-	guest_id: ID!
-	guest: Guest! @connection(fields: ["guest_id"])
+	typeId: ID!
+	guestId: ID!
+	guest: Guest! @connection(fields: ["guestId"])
 	type: MealType!
 	vegetarian: Boolean
 	vegan: Boolean
 	other: Boolean
-	other_description: String
+	otherDescription: String
 }
 
-type MealType @model {
+type MealType 
+@model {
 	id: ID!
 	name: String!
 	description: String!
-	meals: [Meal] @connection(keyName: "byMealType", fields: ["id"])
+	meals: [Meal]! @connection(keyName: "byMealType", fields: ["id"])
 }

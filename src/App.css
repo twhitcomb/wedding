@@ -7,6 +7,12 @@
 	--orange: #ac775c;
 	--brown: #52453c;
 	--black: #222;
+
+	/* Bootstrap Overrides */
+	--primary: var(--blue);
+	--secondary: var(--orange);
+	--success: var(--teal);
+	--danger: var(--burgundy);
 }
 
 body {
@@ -24,4 +30,25 @@ a:hover {
 	color: var(--white);
 	text-shadow: 0 0 10px var(--black);
 	transition: all 0.3s;
+}
+
+/* Bootstrap Overrides */
+.btn-primary {
+	background-color: var(--primary);
+	border-color: var(--primary);
+}
+
+.btn-secondary {
+	background-color: var(--secondary);
+	border-color: var(--secondary);
+}
+
+.btn-success {
+	background-color: var(--success);
+	border-color: var(--success);
+}
+
+.btn-danger {
+	background-color: var(--danger);
+	border-color: var(--danger);
 }
