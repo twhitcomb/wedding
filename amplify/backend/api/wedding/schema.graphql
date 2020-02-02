@@ -11,11 +11,10 @@ type Guest
 @key(name: "byGroup", fields: ["groupId"]) {
 	id: ID!
 	groupId: ID!
-	mealId: ID!
 	firstName: String!
 	firstNamePreferred: String
 	lastName: String!
-	group: Group! @connection(fields: ["groupId"])
+	group: Group @connection(fields: ["groupId"])
 	email: AWSEmail
 	phone: AWSPhone
 	address: String!
@@ -24,7 +23,7 @@ type Guest
 	directInvite: Boolean!
 	plusOneEligible: Boolean!
 	plusOne: Guest @connection
-	meal: Meal @connection(fields: ["mealId"])
+	meal: Meal @connection
 }
 
 type Meal 
@@ -32,13 +31,13 @@ type Meal
 @key(name: "byMealType", fields: ["typeId"]) {
 	id: ID!
 	typeId: ID!
-	guestId: ID!
-	guest: Guest! @connection(fields: ["guestId"])
+	guest: Guest! @connection
 	type: MealType!
-	vegetarian: Boolean
-	vegan: Boolean
-	other: Boolean
-	otherDescription: String
+	dietaryRestriction: Boolean!
+	dietaryRestrictionDescription: String
+	foodAllergy: Boolean!
+	foodAllergyDescription: String
+	kidsMeal: Boolean
 }
 
 type MealType 

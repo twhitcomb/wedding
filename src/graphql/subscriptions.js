@@ -10,7 +10,6 @@ export const onCreateGroup = `subscription OnCreateGroup {
       items {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -36,7 +35,6 @@ export const onUpdateGroup = `subscription OnUpdateGroup {
       items {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -62,7 +60,6 @@ export const onDeleteGroup = `subscription OnDeleteGroup {
       items {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -83,7 +80,6 @@ export const onCreateGuest = `subscription OnCreateGuest {
   onCreateGuest {
     id
     groupId
-    mealId
     firstName
     firstNamePreferred
     lastName
@@ -105,7 +101,6 @@ export const onCreateGuest = `subscription OnCreateGuest {
     plusOne {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -124,7 +119,6 @@ export const onCreateGuest = `subscription OnCreateGuest {
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -139,21 +133,19 @@ export const onCreateGuest = `subscription OnCreateGuest {
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     meal {
       id
       typeId
-      guestId
       guest {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -170,10 +162,11 @@ export const onCreateGuest = `subscription OnCreateGuest {
         name
         description
       }
-      vegetarian
-      vegan
-      other
-      otherDescription
+      dietaryRestriction
+      dietaryRestrictionDescription
+      foodAllergy
+      foodAllergyDescription
+      kidsMeal
     }
   }
 }
@@ -182,7 +175,6 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
   onUpdateGuest {
     id
     groupId
-    mealId
     firstName
     firstNamePreferred
     lastName
@@ -204,7 +196,6 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
     plusOne {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -223,7 +214,6 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -238,21 +228,19 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     meal {
       id
       typeId
-      guestId
       guest {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -269,10 +257,11 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
         name
         description
       }
-      vegetarian
-      vegan
-      other
-      otherDescription
+      dietaryRestriction
+      dietaryRestrictionDescription
+      foodAllergy
+      foodAllergyDescription
+      kidsMeal
     }
   }
 }
@@ -281,7 +270,6 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
   onDeleteGuest {
     id
     groupId
-    mealId
     firstName
     firstNamePreferred
     lastName
@@ -303,7 +291,6 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
     plusOne {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -322,7 +309,6 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -337,21 +323,19 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     meal {
       id
       typeId
-      guestId
       guest {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -368,10 +352,11 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
         name
         description
       }
-      vegetarian
-      vegan
-      other
-      otherDescription
+      dietaryRestriction
+      dietaryRestrictionDescription
+      foodAllergy
+      foodAllergyDescription
+      kidsMeal
     }
   }
 }
@@ -380,11 +365,9 @@ export const onCreateMeal = `subscription OnCreateMeal {
   onCreateMeal {
     id
     typeId
-    guestId
     guest {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -403,7 +386,6 @@ export const onCreateMeal = `subscription OnCreateMeal {
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -418,11 +400,11 @@ export const onCreateMeal = `subscription OnCreateMeal {
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     type {
@@ -433,10 +415,11 @@ export const onCreateMeal = `subscription OnCreateMeal {
         nextToken
       }
     }
-    vegetarian
-    vegan
-    other
-    otherDescription
+    dietaryRestriction
+    dietaryRestrictionDescription
+    foodAllergy
+    foodAllergyDescription
+    kidsMeal
   }
 }
 `;
@@ -444,11 +427,9 @@ export const onUpdateMeal = `subscription OnUpdateMeal {
   onUpdateMeal {
     id
     typeId
-    guestId
     guest {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -467,7 +448,6 @@ export const onUpdateMeal = `subscription OnUpdateMeal {
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -482,11 +462,11 @@ export const onUpdateMeal = `subscription OnUpdateMeal {
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     type {
@@ -497,10 +477,11 @@ export const onUpdateMeal = `subscription OnUpdateMeal {
         nextToken
       }
     }
-    vegetarian
-    vegan
-    other
-    otherDescription
+    dietaryRestriction
+    dietaryRestrictionDescription
+    foodAllergy
+    foodAllergyDescription
+    kidsMeal
   }
 }
 `;
@@ -508,11 +489,9 @@ export const onDeleteMeal = `subscription OnDeleteMeal {
   onDeleteMeal {
     id
     typeId
-    guestId
     guest {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -531,7 +510,6 @@ export const onDeleteMeal = `subscription OnDeleteMeal {
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -546,11 +524,11 @@ export const onDeleteMeal = `subscription OnDeleteMeal {
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     type {
@@ -561,10 +539,11 @@ export const onDeleteMeal = `subscription OnDeleteMeal {
         nextToken
       }
     }
-    vegetarian
-    vegan
-    other
-    otherDescription
+    dietaryRestriction
+    dietaryRestrictionDescription
+    foodAllergy
+    foodAllergyDescription
+    kidsMeal
   }
 }
 `;
@@ -577,11 +556,11 @@ export const onCreateMealType = `subscription OnCreateMealType {
       items {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
       nextToken
     }
@@ -597,11 +576,11 @@ export const onUpdateMealType = `subscription OnUpdateMealType {
       items {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
       nextToken
     }
@@ -617,11 +596,11 @@ export const onDeleteMealType = `subscription OnDeleteMealType {
       items {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
       nextToken
     }

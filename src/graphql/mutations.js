@@ -13,7 +13,6 @@ export const createGroup = `mutation CreateGroup(
       items {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -42,7 +41,6 @@ export const updateGroup = `mutation UpdateGroup(
       items {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -71,7 +69,6 @@ export const deleteGroup = `mutation DeleteGroup(
       items {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -95,7 +92,6 @@ export const createGuest = `mutation CreateGuest(
   createGuest(input: $input, condition: $condition) {
     id
     groupId
-    mealId
     firstName
     firstNamePreferred
     lastName
@@ -117,7 +113,6 @@ export const createGuest = `mutation CreateGuest(
     plusOne {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -136,7 +131,6 @@ export const createGuest = `mutation CreateGuest(
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -151,21 +145,19 @@ export const createGuest = `mutation CreateGuest(
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     meal {
       id
       typeId
-      guestId
       guest {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -182,10 +174,11 @@ export const createGuest = `mutation CreateGuest(
         name
         description
       }
-      vegetarian
-      vegan
-      other
-      otherDescription
+      dietaryRestriction
+      dietaryRestrictionDescription
+      foodAllergy
+      foodAllergyDescription
+      kidsMeal
     }
   }
 }
@@ -197,7 +190,6 @@ export const updateGuest = `mutation UpdateGuest(
   updateGuest(input: $input, condition: $condition) {
     id
     groupId
-    mealId
     firstName
     firstNamePreferred
     lastName
@@ -219,7 +211,6 @@ export const updateGuest = `mutation UpdateGuest(
     plusOne {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -238,7 +229,6 @@ export const updateGuest = `mutation UpdateGuest(
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -253,21 +243,19 @@ export const updateGuest = `mutation UpdateGuest(
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     meal {
       id
       typeId
-      guestId
       guest {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -284,10 +272,11 @@ export const updateGuest = `mutation UpdateGuest(
         name
         description
       }
-      vegetarian
-      vegan
-      other
-      otherDescription
+      dietaryRestriction
+      dietaryRestrictionDescription
+      foodAllergy
+      foodAllergyDescription
+      kidsMeal
     }
   }
 }
@@ -299,7 +288,6 @@ export const deleteGuest = `mutation DeleteGuest(
   deleteGuest(input: $input, condition: $condition) {
     id
     groupId
-    mealId
     firstName
     firstNamePreferred
     lastName
@@ -321,7 +309,6 @@ export const deleteGuest = `mutation DeleteGuest(
     plusOne {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -340,7 +327,6 @@ export const deleteGuest = `mutation DeleteGuest(
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -355,21 +341,19 @@ export const deleteGuest = `mutation DeleteGuest(
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     meal {
       id
       typeId
-      guestId
       guest {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -386,10 +370,11 @@ export const deleteGuest = `mutation DeleteGuest(
         name
         description
       }
-      vegetarian
-      vegan
-      other
-      otherDescription
+      dietaryRestriction
+      dietaryRestrictionDescription
+      foodAllergy
+      foodAllergyDescription
+      kidsMeal
     }
   }
 }
@@ -401,11 +386,9 @@ export const createMeal = `mutation CreateMeal(
   createMeal(input: $input, condition: $condition) {
     id
     typeId
-    guestId
     guest {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -424,7 +407,6 @@ export const createMeal = `mutation CreateMeal(
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -439,11 +421,11 @@ export const createMeal = `mutation CreateMeal(
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     type {
@@ -454,10 +436,11 @@ export const createMeal = `mutation CreateMeal(
         nextToken
       }
     }
-    vegetarian
-    vegan
-    other
-    otherDescription
+    dietaryRestriction
+    dietaryRestrictionDescription
+    foodAllergy
+    foodAllergyDescription
+    kidsMeal
   }
 }
 `;
@@ -468,11 +451,9 @@ export const updateMeal = `mutation UpdateMeal(
   updateMeal(input: $input, condition: $condition) {
     id
     typeId
-    guestId
     guest {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -491,7 +472,6 @@ export const updateMeal = `mutation UpdateMeal(
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -506,11 +486,11 @@ export const updateMeal = `mutation UpdateMeal(
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     type {
@@ -521,10 +501,11 @@ export const updateMeal = `mutation UpdateMeal(
         nextToken
       }
     }
-    vegetarian
-    vegan
-    other
-    otherDescription
+    dietaryRestriction
+    dietaryRestrictionDescription
+    foodAllergy
+    foodAllergyDescription
+    kidsMeal
   }
 }
 `;
@@ -535,11 +516,9 @@ export const deleteMeal = `mutation DeleteMeal(
   deleteMeal(input: $input, condition: $condition) {
     id
     typeId
-    guestId
     guest {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -558,7 +537,6 @@ export const deleteMeal = `mutation DeleteMeal(
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -573,11 +551,11 @@ export const deleteMeal = `mutation DeleteMeal(
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     type {
@@ -588,10 +566,11 @@ export const deleteMeal = `mutation DeleteMeal(
         nextToken
       }
     }
-    vegetarian
-    vegan
-    other
-    otherDescription
+    dietaryRestriction
+    dietaryRestrictionDescription
+    foodAllergy
+    foodAllergyDescription
+    kidsMeal
   }
 }
 `;
@@ -607,11 +586,11 @@ export const createMealType = `mutation CreateMealType(
       items {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
       nextToken
     }
@@ -630,11 +609,11 @@ export const updateMealType = `mutation UpdateMealType(
       items {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
       nextToken
     }
@@ -653,11 +632,11 @@ export const deleteMealType = `mutation DeleteMealType(
       items {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
       nextToken
     }

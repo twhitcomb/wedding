@@ -10,7 +10,6 @@ export const getGroup = `query GetGroup($id: ID!) {
       items {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -49,7 +48,6 @@ export const getGuest = `query GetGuest($id: ID!) {
   getGuest(id: $id) {
     id
     groupId
-    mealId
     firstName
     firstNamePreferred
     lastName
@@ -71,7 +69,6 @@ export const getGuest = `query GetGuest($id: ID!) {
     plusOne {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -90,7 +87,6 @@ export const getGuest = `query GetGuest($id: ID!) {
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -105,21 +101,19 @@ export const getGuest = `query GetGuest($id: ID!) {
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     meal {
       id
       typeId
-      guestId
       guest {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -136,10 +130,11 @@ export const getGuest = `query GetGuest($id: ID!) {
         name
         description
       }
-      vegetarian
-      vegan
-      other
-      otherDescription
+      dietaryRestriction
+      dietaryRestrictionDescription
+      foodAllergy
+      foodAllergyDescription
+      kidsMeal
     }
   }
 }
@@ -153,7 +148,6 @@ export const listGuests = `query ListGuests(
     items {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -172,7 +166,6 @@ export const listGuests = `query ListGuests(
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -187,11 +180,11 @@ export const listGuests = `query ListGuests(
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     nextToken
@@ -202,11 +195,9 @@ export const getMeal = `query GetMeal($id: ID!) {
   getMeal(id: $id) {
     id
     typeId
-    guestId
     guest {
       id
       groupId
-      mealId
       firstName
       firstNamePreferred
       lastName
@@ -225,7 +216,6 @@ export const getMeal = `query GetMeal($id: ID!) {
       plusOne {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -240,11 +230,11 @@ export const getMeal = `query GetMeal($id: ID!) {
       meal {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
     }
     type {
@@ -255,10 +245,11 @@ export const getMeal = `query GetMeal($id: ID!) {
         nextToken
       }
     }
-    vegetarian
-    vegan
-    other
-    otherDescription
+    dietaryRestriction
+    dietaryRestrictionDescription
+    foodAllergy
+    foodAllergyDescription
+    kidsMeal
   }
 }
 `;
@@ -271,11 +262,9 @@ export const listMeals = `query ListMeals(
     items {
       id
       typeId
-      guestId
       guest {
         id
         groupId
-        mealId
         firstName
         firstNamePreferred
         lastName
@@ -292,10 +281,11 @@ export const listMeals = `query ListMeals(
         name
         description
       }
-      vegetarian
-      vegan
-      other
-      otherDescription
+      dietaryRestriction
+      dietaryRestrictionDescription
+      foodAllergy
+      foodAllergyDescription
+      kidsMeal
     }
     nextToken
   }
@@ -310,11 +300,11 @@ export const getMealType = `query GetMealType($id: ID!) {
       items {
         id
         typeId
-        guestId
-        vegetarian
-        vegan
-        other
-        otherDescription
+        dietaryRestriction
+        dietaryRestrictionDescription
+        foodAllergy
+        foodAllergyDescription
+        kidsMeal
       }
       nextToken
     }
