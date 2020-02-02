@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import ReactPhoneInput from 'react-phone-input-2';
+
 import styled from 'styled-components';
 import { Container, Card, CardBody, CardTitle, Button, Form, FormGroup, Label, Input, Row, Col, Table, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
-import { API, graphqlOperation } from 'aws-amplify';
-
 import useWindowWidth from '../hooks/useWindowWidth';
 
-import { listMealTypes } from '../graphql/queries';
-import { createGroup, createGuest, createMealType } from '../graphql/mutations';
-import { onCreateGroup, onCreateMealType } from '../graphql/subscriptions';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listRoles, listMealTypes } from '../graphql/queries';
+import { createGroup, createGuest, createRole, createMealType } from '../graphql/mutations';
+import { onCreateGroup, onCreateGuest, onCreateRole, onCreateMealType } from '../graphql/subscriptions';
 
 /*
     GraphQL Queries
@@ -21,9 +22,10 @@ query ListGroups($limit: Int) {
             id
             name
             number
+            address
             guests {
                 items {
-                    firstName
+                    firstNamePreferred
                     lastName
                 }
             }
@@ -46,19 +48,25 @@ const Invites = () => {
 
     // States
     const [groups, setGroups] = useState([]);
-    const [groupsLoaded, setGroupsLoaded] = useState(false);
-    const [groupsSubscription, setGroupsSubscription] = useState(null);
-
+    const [roles, setRoles] = useState([]);
     const [mealTypes, setMealTypes] = useState([]);
+
+    const [groupsSubscription, setGroupsSubscription] = useState(null);
+    const [guestsSubscription, setGuestsSubscription] = useState(null);
+    const [rolesSubscription, setRolesSubscription] = useState(null);
     const [mealTypesSubscription, setMealTypesSubscription] = useState(null);
+
+    const [groupsLoaded, setGroupsLoaded] = useState(false);
 
     // Modals
     const [groupsModal, setGroupsModal] = useState(false);
-    const toggleGroupsModal = () => setGroupsModal(!groupsModal);
+    const [roleModal, setRoleModal] = useState(false);
     const [mealTypeModal, setMealTypeModal] = useState(false);
-    const toggleMealTypeModal = () => setMealTypeModal(!mealTypeModal);
     const [guestModal, setGuestModal] = useState(false);
     const [guestModalID, setGuestModalID] = useState(null);
+    const toggleGroupsModal = () => setGroupsModal(!groupsModal);
+    const toggleRoleModal = () => setRoleModal(!roleModal);
+    const toggleMealTypeModal = () => setMealTypeModal(!mealTypeModal);
     const toggleGuestModal = (id = null) => {
         setGuestModalID(id);
         return setGuestModal(!guestModal);
@@ -67,10 +75,12 @@ const Invites = () => {
     // References to states
     const refGroups = useRef(groups);
     const refMealTypes = useRef(mealTypes);
+    const refRoles = useRef(roles);
 
     // useEffects to reference states
     useEffect(() => { refGroups.current = groups; });
     useEffect(() => { refMealTypes.current = mealTypes; });
+    useEffect(() => { refRoles.current = roles; });
 
     useEffect(() => {
 
@@ -96,10 +106,34 @@ const Invites = () => {
             })
         );
 
+        /* Guests GraphQL */
+        // Subscription
+        setGuestsSubscription(
+            API.graphql(graphqlOperation(onCreateGuest)).subscribe({
+                next: (response) => {
+
+                    let current = [...refGroups.current];
+                    const groupId = response.value.data.onCreateGuest.groupId;
+                    
+                    // Update Group
+                    current.forEach((group, index) => {
+                        if (group.id === groupId) {
+                            group.guests.items = [...group.guests.items, {
+                                id: response.value.data.onCreateGuest.id,
+                                firstName: response.value.data.onCreateGuest.firstName,
+                                lastName: response.value.data.onCreateGuest.lastName
+                            }];
+                        }
+                    });
+
+                    setGroups(current);
+                }
+            })
+        );
+
         /* MealTypes GraphQL */
         // Query
         (async () => {
-
             const response = await API.graphql(graphqlOperation(listMealTypes, { limit: 100 }));
             setMealTypes(response.data.listMealTypes.items);
         })();
@@ -113,10 +147,28 @@ const Invites = () => {
             })
         );
 
+        /* Role GraphQL */
+        // Query
+        (async () => {
+            const response = await API.graphql(graphqlOperation(listRoles, { limit: 100 }));
+            setRoles(response.data.listRoles.items);
+        })();
+
+        // Subscription
+        setRolesSubscription(
+            API.graphql(graphqlOperation(onCreateRole)).subscribe({
+                next: (response) => {
+                    setRoles([...refRoles.current, response.value.data.onCreateRole]);
+                }
+            })
+        );
+
     }, []);
 
     return (
         <Container>
+
+            {/* Groups Card */}
             <CardStyled>
                 <CardBody>
                     <CardTitle>
@@ -136,7 +188,8 @@ const Invites = () => {
                         <thead>
                             <tr>
                                 <th style={{ width: "2%" }}>#</th>
-                                <th style={{ width: "30%"}}>Name</th>
+                                <th style={{ width: "20%"}}>Name</th>
+                                <th style={{ width: "30%"}}>Address</th>
                                 <th>Guests</th>
                                 <th style={{ width: device === "desktop" ? "150px" : "30px" }}></th>
                             </tr>
@@ -147,7 +200,8 @@ const Invites = () => {
                                     <tr key={i}>
                                         <td className='align-middle'>{d.number}</td>
                                         <td className='align-middle'>{d.name}</td>
-                                        <td className='align-middle'>{d.guests.items.map((d) => `${d.firstName} ${d.lastName}`).join(", ")}</td>
+                                        <td className='align-middle' style={{ whiteSpace: "pre-line" }}>{d.address.replace(/;/g, "\n")}</td>
+                                        <td className='align-middle'>{d.guests.items.map((d) => `${d.firstNamePreferred} ${d.lastName}`).join(", ")}</td>
                                         <td>
                                             <Button 
                                                 color='secondary'
@@ -162,6 +216,43 @@ const Invites = () => {
                 </CardBody>
             </CardStyled>
 
+            {/* Roles Card */}
+            <CardStyled>
+                <CardBody>
+                    <CardTitle>
+                        <Row>
+                            <Col xs='7'><h2>Roles</h2></Col>
+                            <Col xs='5'>
+                                <Button
+                                    color='primary'
+                                    className='float-right'
+                                    onClick={toggleRoleModal}
+                                >+ Create Role</Button>
+                            </Col>
+                        </Row>
+                    </CardTitle>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>Role Name</th>
+                                <th>Wedding Party?</th>
+                            </tr>
+                        </thead>
+                        <tbody>{
+                            roles.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((d, i) => {
+                                return (
+                                    <tr key={i}>
+                                        <td>{d.name}</td>
+                                        <td>{d.weddingParty ? "Yes" : "No"}</td>
+                                    </tr>
+                                );
+                            })
+                        }</tbody>
+                    </Table>
+                </CardBody>
+            </CardStyled>
+
+            {/* Meal Types Card */}
             <CardStyled>
                 <CardBody>
                     <CardTitle>
@@ -209,7 +300,15 @@ const Invites = () => {
             <Modal isOpen={guestModal} toggle={toggleGuestModal}>
                 <ModalHeader toggle={toggleGuestModal}>Invite New Guest</ModalHeader>
                 <ModalBody>
-                    <CreateGuestForm groupId={guestModalID} toggleGuestModal={toggleGuestModal} />
+                    <CreateGuestForm groupId={guestModalID} toggleGuestModal={toggleGuestModal} roles={roles} />
+                </ModalBody>
+            </Modal>
+
+            {/* Create New Role Modal */}
+            <Modal isOpen={roleModal} toggle={toggleRoleModal}>
+                <ModalHeader toggle={toggleRoleModal}>Create New Role</ModalHeader>
+                <ModalBody>
+                    <CreateRoleForm toggleRoleModal={toggleRoleModal} />
                 </ModalBody>
             </Modal>
 
@@ -232,6 +331,7 @@ const CreateGroupForm = (props) => {
 
     // Group Name Input State
     const [groupName, setGroupName] = useState("");
+    const [address, setAddress] = useState("");
 
     // Group Name Form Submit
     const groupNameSubmit = (e) => {
@@ -242,7 +342,8 @@ const CreateGroupForm = (props) => {
                 createGroup, {
                     input: {
                         number: props.groups.length + 1,
-                        name: groupName
+                        name: groupName.length > 0 ? groupName : undefined,
+                        address: address.replace(/(?:\r\n|\r|\n)/g, ";")
                     }
                 }
             ));
@@ -251,16 +352,27 @@ const CreateGroupForm = (props) => {
     };
 
     return (
-        <Form onKeyPress={(e) => e.which === 13 ? groupNameSubmit(e) : null}>
+        <Form>
             <FormGroup>
-                <Label for='group-name'>Group Name</Label>
-                <Input type='text' name='group-name' id='group-name' value={groupName} onChange={(e) => setGroupName(e.target.value)} />
+                <Input onKeyPress={(e) => e.which === 13 ? e.preventDefault() : null} type='text' name='group-name' id='group-name' value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder='Group Name' />
             </FormGroup>
-        
-            <Button color='primary' onClick={groupNameSubmit}>Create</Button>
+            <FormGroup>
+                <Input type='textarea' name='address' id='address' value={address} onChange={(e) => setAddress(e.target.value)} placeholder='Full Address' />
+            </FormGroup>
+            <Button color='primary' onClick={groupNameSubmit}>Create Group</Button>
         </Form>
     );
 };
+
+/*
+    <FormGroup>
+        <Input type='email' name='email' id='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
+    </FormGroup>
+    <FormGroup>
+        <Label for='phone'>Phone Number (with Country Code)</Label>
+        <ReactPhoneInput name='phone' id='phone' value={phone} onChange={setPhone} defaultCountry={"us"} />
+    </FormGroup>
+*/
 
 const CreateGuestForm = (props) => {
 
@@ -268,11 +380,8 @@ const CreateGuestForm = (props) => {
     const [firstName, setFirstName] = useState("");
     const [firstNamePreferred, setFirstNamePreferred] = useState("");
     const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
-    const [directInvite, setDirectInvite] = useState("Yes");
-    const [plusOneEligible, setPlusOneEligible] = useState("Yes");
+    const [role, setRole] = useState(null);
+    const [plusOneEligible, setPlusOneEligible] = useState(false);
 
     // Guest Form Submit
     const guestFormSubmit = (e) => {
@@ -282,20 +391,18 @@ const CreateGuestForm = (props) => {
                 createGuest, {
                     input: {
                         firstName: firstName,
-                        firstNamePreferred: firstNamePreferred,
+                        firstNamePreferred: firstNamePreferred.length > 0 ? firstNamePreferred : firstName,
                         lastName: lastName,
                         groupId: props.groupId,
-                        email: email,
-                        phone: phone,
-                        address: address,
-                        directInvite: directInvite === "Yes",
-                        plusOneEligible: plusOneEligible === "Yes"
+                        directInvite: true,
+                        roleId: role,
+                        plusOneEligible: plusOneEligible
                     }
                 }
             ));
             props.toggleGuestModal();
         })();
-    }
+    };
 
     return (
         <Form onKeyPress={(e) => e.which === 13 ? guestFormSubmit(e) : null}>
@@ -309,29 +416,57 @@ const CreateGuestForm = (props) => {
                 <Input type='text' name='last-name' id='last-name' value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' />
             </FormGroup>
             <FormGroup>
-                <Input type='email' name='email' id='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
-            </FormGroup>
-            <FormGroup>
-                <Input type='tel' name='phone' id='phone' value={phone} onChange={(e) => setPhone(e.target.value)} placeholder='Phone' />
-            </FormGroup>
-            <FormGroup>
-                <Input type='text' name='address' id='address' value={address} onChange={(e) => setAddress(e.target.value)} placeholder='Full Address' />
-            </FormGroup>
-            <FormGroup>
-                <Label for='direct-invite'>Direct Invite?</Label>
-                <Input type='select' name='direct-invite' id='direct-invite' value={directInvite} onChange={(e) => setDirectInvite(e.target.value)}>
-                    <option value='Yes'>Yes</option>
-                    <option value='No'>No</option>
+                <Label for='role'>Role</Label>
+                <Input type='select' name='role' id='role' value={role} onChange={(e) => setRole(e.target.value)}>
+                    <option value={null}>Guest</option>
+                    {props.roles.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((d, i) => <option value={d.id}>{d.name}</option>)}
                 </Input>
             </FormGroup>
-            <FormGroup>
-                <Label for='plus-one-eligible'>Plus One Eligible?</Label>
-                <Input type='select' name='plus-one-eligible' id='plus-one-eligible' value={plusOneEligible} onChange={(e) => setPlusOneEligible(e.target.value)}>
-                    <option value='Yes'>Yes</option>
-                    <option value='No'>No</option>
-                </Input>
+            <FormGroup check>
+                <Label for='plus-one-eligible'>
+                    <Input type='checkbox' name='plus-one-eligible' id='plus-one-eligible' checked={plusOneEligible} onChange={(e) => setPlusOneEligible(e.target.checked)} />
+                    Plus One Eligible?
+                </Label>
             </FormGroup>
-            <Button onClick={guestFormSubmit}>Invite</Button>
+            <Button onClick={guestFormSubmit}>Invite Guest</Button>
+        </Form>
+    );
+};
+
+const CreateRoleForm = (props) => {
+
+    // Input States
+    const [roleName, setRoleName] = useState("");
+    const [roleWeddingParty, setRoleWeddingParty] = useState(false);
+
+    // Role Form Submit
+    const roleFormSubmit = (e) => {
+        e.preventDefault();
+        (async () => {
+            await API.graphql(graphqlOperation(
+                createRole, {
+                    input: {
+                        name: roleName,
+                        weddingParty: roleWeddingParty
+                    }
+                }
+            ));
+            props.toggleRoleModal();
+        })();
+    };
+
+    return (
+        <Form onKeyPress={(e) => e.which === 13 ? roleFormSubmit(e) : null}>
+            <FormGroup>
+                <Input type='text' name='role-name' id='role-name' value={roleName} onChange={(e) => setRoleName(e.target.value)} placeholder='Role Name' />
+            </FormGroup>
+            <FormGroup check>
+                <Label for='wedding-party'>
+                    <Input type='checkbox' name='wedding-party' id='wedding-party' checked={roleWeddingParty} onChange={(e) => setRoleWeddingParty(e.target.checked)} />
+                    Wedding Party?
+                </Label>
+            </FormGroup>
+            <Button onClick={roleFormSubmit}>Create Role</Button>
         </Form>
     );
 };
@@ -356,7 +491,7 @@ const CreateMealTypeForm = (props) => {
             ));
             props.toggleMealTypeModal();
         })();
-    }
+    };
 
     return (
         <Form onKeyPress={(e) => e.which === 13 ? mealTypeFormSubmit(e) : null}>

@@ -1,8 +1,9 @@
 type Group 
 @model {
 	id: ID!
-	name: String
 	number: Int!
+	name: String
+	address: String!
 	guests: [Guest]! @connection(keyName: "byGroup", fields: ["id"])
 }
 
@@ -15,15 +16,24 @@ type Guest
 	firstNamePreferred: String
 	lastName: String!
 	group: Group @connection(fields: ["groupId"])
-	email: AWSEmail
-	phone: AWSPhone
-	address: String!
+	email: String
+	phone: String
+	roleId: ID
+	role: Role @connection
 	rsvp: Boolean
 	rsvpDatetime: AWSDateTime
 	directInvite: Boolean!
 	plusOneEligible: Boolean!
 	plusOne: Guest @connection
 	meal: Meal @connection
+}
+
+type Role
+@model {
+	id: ID!
+	name: String!
+	weddingParty: Boolean!
+	guests: [Guest]! @connection
 }
 
 type Meal 

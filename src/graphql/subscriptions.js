@@ -4,8 +4,9 @@
 export const onCreateGroup = `subscription OnCreateGroup {
   onCreateGroup {
     id
-    name
     number
+    name
+    address
     guests {
       items {
         id
@@ -15,7 +16,7 @@ export const onCreateGroup = `subscription OnCreateGroup {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -29,8 +30,9 @@ export const onCreateGroup = `subscription OnCreateGroup {
 export const onUpdateGroup = `subscription OnUpdateGroup {
   onUpdateGroup {
     id
-    name
     number
+    name
+    address
     guests {
       items {
         id
@@ -40,7 +42,7 @@ export const onUpdateGroup = `subscription OnUpdateGroup {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -54,8 +56,9 @@ export const onUpdateGroup = `subscription OnUpdateGroup {
 export const onDeleteGroup = `subscription OnDeleteGroup {
   onDeleteGroup {
     id
-    name
     number
+    name
+    address
     guests {
       items {
         id
@@ -65,7 +68,7 @@ export const onDeleteGroup = `subscription OnDeleteGroup {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -85,15 +88,24 @@ export const onCreateGuest = `subscription OnCreateGuest {
     lastName
     group {
       id
-      name
       number
+      name
+      address
       guests {
         nextToken
       }
     }
     email
     phone
-    address
+    roleId
+    role {
+      id
+      name
+      weddingParty
+      guests {
+        nextToken
+      }
+    }
     rsvp
     rsvpDatetime
     directInvite
@@ -106,12 +118,18 @@ export const onCreateGuest = `subscription OnCreateGuest {
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -124,7 +142,7 @@ export const onCreateGuest = `subscription OnCreateGuest {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -151,7 +169,7 @@ export const onCreateGuest = `subscription OnCreateGuest {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -180,15 +198,24 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
     lastName
     group {
       id
-      name
       number
+      name
+      address
       guests {
         nextToken
       }
     }
     email
     phone
-    address
+    roleId
+    role {
+      id
+      name
+      weddingParty
+      guests {
+        nextToken
+      }
+    }
     rsvp
     rsvpDatetime
     directInvite
@@ -201,12 +228,18 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -219,7 +252,7 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -246,7 +279,7 @@ export const onUpdateGuest = `subscription OnUpdateGuest {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -275,15 +308,24 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
     lastName
     group {
       id
-      name
       number
+      name
+      address
       guests {
         nextToken
       }
     }
     email
     phone
-    address
+    roleId
+    role {
+      id
+      name
+      weddingParty
+      guests {
+        nextToken
+      }
+    }
     rsvp
     rsvpDatetime
     directInvite
@@ -296,12 +338,18 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -314,7 +362,7 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -341,7 +389,7 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -361,6 +409,81 @@ export const onDeleteGuest = `subscription OnDeleteGuest {
   }
 }
 `;
+export const onCreateRole = `subscription OnCreateRole {
+  onCreateRole {
+    id
+    name
+    weddingParty
+    guests {
+      items {
+        id
+        groupId
+        firstName
+        firstNamePreferred
+        lastName
+        email
+        phone
+        roleId
+        rsvp
+        rsvpDatetime
+        directInvite
+        plusOneEligible
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onUpdateRole = `subscription OnUpdateRole {
+  onUpdateRole {
+    id
+    name
+    weddingParty
+    guests {
+      items {
+        id
+        groupId
+        firstName
+        firstNamePreferred
+        lastName
+        email
+        phone
+        roleId
+        rsvp
+        rsvpDatetime
+        directInvite
+        plusOneEligible
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onDeleteRole = `subscription OnDeleteRole {
+  onDeleteRole {
+    id
+    name
+    weddingParty
+    guests {
+      items {
+        id
+        groupId
+        firstName
+        firstNamePreferred
+        lastName
+        email
+        phone
+        roleId
+        rsvp
+        rsvpDatetime
+        directInvite
+        plusOneEligible
+      }
+      nextToken
+    }
+  }
+}
+`;
 export const onCreateMeal = `subscription OnCreateMeal {
   onCreateMeal {
     id
@@ -373,12 +496,18 @@ export const onCreateMeal = `subscription OnCreateMeal {
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -391,7 +520,7 @@ export const onCreateMeal = `subscription OnCreateMeal {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -435,12 +564,18 @@ export const onUpdateMeal = `subscription OnUpdateMeal {
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -453,7 +588,7 @@ export const onUpdateMeal = `subscription OnUpdateMeal {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -497,12 +632,18 @@ export const onDeleteMeal = `subscription OnDeleteMeal {
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -515,7 +656,7 @@ export const onDeleteMeal = `subscription OnDeleteMeal {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite

@@ -7,8 +7,9 @@ export const createGroup = `mutation CreateGroup(
 ) {
   createGroup(input: $input, condition: $condition) {
     id
-    name
     number
+    name
+    address
     guests {
       items {
         id
@@ -18,7 +19,7 @@ export const createGroup = `mutation CreateGroup(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -35,8 +36,9 @@ export const updateGroup = `mutation UpdateGroup(
 ) {
   updateGroup(input: $input, condition: $condition) {
     id
-    name
     number
+    name
+    address
     guests {
       items {
         id
@@ -46,7 +48,7 @@ export const updateGroup = `mutation UpdateGroup(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -63,8 +65,9 @@ export const deleteGroup = `mutation DeleteGroup(
 ) {
   deleteGroup(input: $input, condition: $condition) {
     id
-    name
     number
+    name
+    address
     guests {
       items {
         id
@@ -74,7 +77,7 @@ export const deleteGroup = `mutation DeleteGroup(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -97,15 +100,24 @@ export const createGuest = `mutation CreateGuest(
     lastName
     group {
       id
-      name
       number
+      name
+      address
       guests {
         nextToken
       }
     }
     email
     phone
-    address
+    roleId
+    role {
+      id
+      name
+      weddingParty
+      guests {
+        nextToken
+      }
+    }
     rsvp
     rsvpDatetime
     directInvite
@@ -118,12 +130,18 @@ export const createGuest = `mutation CreateGuest(
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -136,7 +154,7 @@ export const createGuest = `mutation CreateGuest(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -163,7 +181,7 @@ export const createGuest = `mutation CreateGuest(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -195,15 +213,24 @@ export const updateGuest = `mutation UpdateGuest(
     lastName
     group {
       id
-      name
       number
+      name
+      address
       guests {
         nextToken
       }
     }
     email
     phone
-    address
+    roleId
+    role {
+      id
+      name
+      weddingParty
+      guests {
+        nextToken
+      }
+    }
     rsvp
     rsvpDatetime
     directInvite
@@ -216,12 +243,18 @@ export const updateGuest = `mutation UpdateGuest(
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -234,7 +267,7 @@ export const updateGuest = `mutation UpdateGuest(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -261,7 +294,7 @@ export const updateGuest = `mutation UpdateGuest(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -293,15 +326,24 @@ export const deleteGuest = `mutation DeleteGuest(
     lastName
     group {
       id
-      name
       number
+      name
+      address
       guests {
         nextToken
       }
     }
     email
     phone
-    address
+    roleId
+    role {
+      id
+      name
+      weddingParty
+      guests {
+        nextToken
+      }
+    }
     rsvp
     rsvpDatetime
     directInvite
@@ -314,12 +356,18 @@ export const deleteGuest = `mutation DeleteGuest(
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -332,7 +380,7 @@ export const deleteGuest = `mutation DeleteGuest(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -359,7 +407,7 @@ export const deleteGuest = `mutation DeleteGuest(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -379,6 +427,90 @@ export const deleteGuest = `mutation DeleteGuest(
   }
 }
 `;
+export const createRole = `mutation CreateRole(
+  $input: CreateRoleInput!
+  $condition: ModelRoleConditionInput
+) {
+  createRole(input: $input, condition: $condition) {
+    id
+    name
+    weddingParty
+    guests {
+      items {
+        id
+        groupId
+        firstName
+        firstNamePreferred
+        lastName
+        email
+        phone
+        roleId
+        rsvp
+        rsvpDatetime
+        directInvite
+        plusOneEligible
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updateRole = `mutation UpdateRole(
+  $input: UpdateRoleInput!
+  $condition: ModelRoleConditionInput
+) {
+  updateRole(input: $input, condition: $condition) {
+    id
+    name
+    weddingParty
+    guests {
+      items {
+        id
+        groupId
+        firstName
+        firstNamePreferred
+        lastName
+        email
+        phone
+        roleId
+        rsvp
+        rsvpDatetime
+        directInvite
+        plusOneEligible
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deleteRole = `mutation DeleteRole(
+  $input: DeleteRoleInput!
+  $condition: ModelRoleConditionInput
+) {
+  deleteRole(input: $input, condition: $condition) {
+    id
+    name
+    weddingParty
+    guests {
+      items {
+        id
+        groupId
+        firstName
+        firstNamePreferred
+        lastName
+        email
+        phone
+        roleId
+        rsvp
+        rsvpDatetime
+        directInvite
+        plusOneEligible
+      }
+      nextToken
+    }
+  }
+}
+`;
 export const createMeal = `mutation CreateMeal(
   $input: CreateMealInput!
   $condition: ModelMealConditionInput
@@ -394,12 +526,18 @@ export const createMeal = `mutation CreateMeal(
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -412,7 +550,7 @@ export const createMeal = `mutation CreateMeal(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -459,12 +597,18 @@ export const updateMeal = `mutation UpdateMeal(
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -477,7 +621,7 @@ export const updateMeal = `mutation UpdateMeal(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -524,12 +668,18 @@ export const deleteMeal = `mutation DeleteMeal(
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -542,7 +692,7 @@ export const deleteMeal = `mutation DeleteMeal(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite

@@ -4,8 +4,9 @@
 export const getGroup = `query GetGroup($id: ID!) {
   getGroup(id: $id) {
     id
-    name
     number
+    name
+    address
     guests {
       items {
         id
@@ -15,7 +16,7 @@ export const getGroup = `query GetGroup($id: ID!) {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -34,8 +35,9 @@ export const listGroups = `query ListGroups(
   listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      name
       number
+      name
+      address
       guests {
         nextToken
       }
@@ -53,15 +55,24 @@ export const getGuest = `query GetGuest($id: ID!) {
     lastName
     group {
       id
-      name
       number
+      name
+      address
       guests {
         nextToken
       }
     }
     email
     phone
-    address
+    roleId
+    role {
+      id
+      name
+      weddingParty
+      guests {
+        nextToken
+      }
+    }
     rsvp
     rsvpDatetime
     directInvite
@@ -74,12 +85,18 @@ export const getGuest = `query GetGuest($id: ID!) {
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -92,7 +109,7 @@ export const getGuest = `query GetGuest($id: ID!) {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -119,7 +136,7 @@ export const getGuest = `query GetGuest($id: ID!) {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -153,12 +170,18 @@ export const listGuests = `query ListGuests(
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -171,7 +194,7 @@ export const listGuests = `query ListGuests(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -191,6 +214,49 @@ export const listGuests = `query ListGuests(
   }
 }
 `;
+export const getRole = `query GetRole($id: ID!) {
+  getRole(id: $id) {
+    id
+    name
+    weddingParty
+    guests {
+      items {
+        id
+        groupId
+        firstName
+        firstNamePreferred
+        lastName
+        email
+        phone
+        roleId
+        rsvp
+        rsvpDatetime
+        directInvite
+        plusOneEligible
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const listRoles = `query ListRoles(
+  $filter: ModelRoleFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listRoles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      weddingParty
+      guests {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
 export const getMeal = `query GetMeal($id: ID!) {
   getMeal(id: $id) {
     id
@@ -203,12 +269,18 @@ export const getMeal = `query GetMeal($id: ID!) {
       lastName
       group {
         id
-        name
         number
+        name
+        address
       }
       email
       phone
-      address
+      roleId
+      role {
+        id
+        name
+        weddingParty
+      }
       rsvp
       rsvpDatetime
       directInvite
@@ -221,7 +293,7 @@ export const getMeal = `query GetMeal($id: ID!) {
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -270,7 +342,7 @@ export const listMeals = `query ListMeals(
         lastName
         email
         phone
-        address
+        roleId
         rsvp
         rsvpDatetime
         directInvite
