@@ -10,13 +10,11 @@ export const getGroup = `query GetGroup($id: ID!) {
     guests {
       items {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -49,7 +47,6 @@ export const listGroups = `query ListGroups(
 export const getGuest = `query GetGuest($id: ID!) {
   getGuest(id: $id) {
     id
-    groupId
     firstName
     firstNamePreferred
     lastName
@@ -64,7 +61,6 @@ export const getGuest = `query GetGuest($id: ID!) {
     }
     email
     phone
-    roleId
     role {
       id
       name
@@ -79,7 +75,6 @@ export const getGuest = `query GetGuest($id: ID!) {
     plusOneEligible
     plusOne {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -91,7 +86,6 @@ export const getGuest = `query GetGuest($id: ID!) {
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -103,13 +97,11 @@ export const getGuest = `query GetGuest($id: ID!) {
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -130,13 +122,11 @@ export const getGuest = `query GetGuest($id: ID!) {
       typeId
       guest {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -164,7 +154,6 @@ export const listGuests = `query ListGuests(
   listGuests(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -176,7 +165,6 @@ export const listGuests = `query ListGuests(
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -188,13 +176,11 @@ export const listGuests = `query ListGuests(
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -222,13 +208,11 @@ export const getRole = `query GetRole($id: ID!) {
     guests {
       items {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -263,7 +247,6 @@ export const getMeal = `query GetMeal($id: ID!) {
     typeId
     guest {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -275,7 +258,6 @@ export const getMeal = `query GetMeal($id: ID!) {
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -287,13 +269,11 @@ export const getMeal = `query GetMeal($id: ID!) {
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -336,13 +316,11 @@ export const listMeals = `query ListMeals(
       typeId
       guest {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite

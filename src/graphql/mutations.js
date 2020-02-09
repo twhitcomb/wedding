@@ -13,13 +13,11 @@ export const createGroup = `mutation CreateGroup(
     guests {
       items {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -42,13 +40,11 @@ export const updateGroup = `mutation UpdateGroup(
     guests {
       items {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -71,13 +67,11 @@ export const deleteGroup = `mutation DeleteGroup(
     guests {
       items {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -94,7 +88,6 @@ export const createGuest = `mutation CreateGuest(
 ) {
   createGuest(input: $input, condition: $condition) {
     id
-    groupId
     firstName
     firstNamePreferred
     lastName
@@ -109,7 +102,6 @@ export const createGuest = `mutation CreateGuest(
     }
     email
     phone
-    roleId
     role {
       id
       name
@@ -124,7 +116,6 @@ export const createGuest = `mutation CreateGuest(
     plusOneEligible
     plusOne {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -136,7 +127,6 @@ export const createGuest = `mutation CreateGuest(
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -148,13 +138,11 @@ export const createGuest = `mutation CreateGuest(
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -175,13 +163,11 @@ export const createGuest = `mutation CreateGuest(
       typeId
       guest {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -207,7 +193,6 @@ export const updateGuest = `mutation UpdateGuest(
 ) {
   updateGuest(input: $input, condition: $condition) {
     id
-    groupId
     firstName
     firstNamePreferred
     lastName
@@ -222,7 +207,6 @@ export const updateGuest = `mutation UpdateGuest(
     }
     email
     phone
-    roleId
     role {
       id
       name
@@ -237,7 +221,6 @@ export const updateGuest = `mutation UpdateGuest(
     plusOneEligible
     plusOne {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -249,7 +232,6 @@ export const updateGuest = `mutation UpdateGuest(
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -261,13 +243,11 @@ export const updateGuest = `mutation UpdateGuest(
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -288,13 +268,11 @@ export const updateGuest = `mutation UpdateGuest(
       typeId
       guest {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -320,7 +298,6 @@ export const deleteGuest = `mutation DeleteGuest(
 ) {
   deleteGuest(input: $input, condition: $condition) {
     id
-    groupId
     firstName
     firstNamePreferred
     lastName
@@ -335,7 +312,6 @@ export const deleteGuest = `mutation DeleteGuest(
     }
     email
     phone
-    roleId
     role {
       id
       name
@@ -350,7 +326,6 @@ export const deleteGuest = `mutation DeleteGuest(
     plusOneEligible
     plusOne {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -362,7 +337,6 @@ export const deleteGuest = `mutation DeleteGuest(
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -374,13 +348,11 @@ export const deleteGuest = `mutation DeleteGuest(
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -401,13 +373,11 @@ export const deleteGuest = `mutation DeleteGuest(
       typeId
       guest {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -438,13 +408,11 @@ export const createRole = `mutation CreateRole(
     guests {
       items {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -466,13 +434,11 @@ export const updateRole = `mutation UpdateRole(
     guests {
       items {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -494,13 +460,11 @@ export const deleteRole = `mutation DeleteRole(
     guests {
       items {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -520,7 +484,6 @@ export const createMeal = `mutation CreateMeal(
     typeId
     guest {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -532,7 +495,6 @@ export const createMeal = `mutation CreateMeal(
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -544,13 +506,11 @@ export const createMeal = `mutation CreateMeal(
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -591,7 +551,6 @@ export const updateMeal = `mutation UpdateMeal(
     typeId
     guest {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -603,7 +562,6 @@ export const updateMeal = `mutation UpdateMeal(
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -615,13 +573,11 @@ export const updateMeal = `mutation UpdateMeal(
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite
@@ -662,7 +618,6 @@ export const deleteMeal = `mutation DeleteMeal(
     typeId
     guest {
       id
-      groupId
       firstName
       firstNamePreferred
       lastName
@@ -674,7 +629,6 @@ export const deleteMeal = `mutation DeleteMeal(
       }
       email
       phone
-      roleId
       role {
         id
         name
@@ -686,13 +640,11 @@ export const deleteMeal = `mutation DeleteMeal(
       plusOneEligible
       plusOne {
         id
-        groupId
         firstName
         firstNamePreferred
         lastName
         email
         phone
-        roleId
         rsvp
         rsvpDatetime
         directInvite

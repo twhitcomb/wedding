@@ -4,22 +4,19 @@ type Group
 	number: Int!
 	name: String
 	address: String!
-	guests: [Guest]! @connection(keyName: "byGroup", fields: ["id"])
+	guests: [Guest]! @connection(name: "GuestGroup")
 }
 
 type Guest 
-@model 
-@key(name: "byGroup", fields: ["groupId"]) {
+@model {
 	id: ID!
-	groupId: ID!
 	firstName: String!
 	firstNamePreferred: String
 	lastName: String!
-	group: Group @connection(fields: ["groupId"])
+	group: Group @connection(name: "GuestGroup")
 	email: String
 	phone: String
-	roleId: ID
-	role: Role @connection
+	role: Role @connection(name: "GuestRole")
 	rsvp: Boolean
 	rsvpDatetime: AWSDateTime
 	directInvite: Boolean!
@@ -33,16 +30,15 @@ type Role
 	id: ID!
 	name: String!
 	weddingParty: Boolean!
-	guests: [Guest]! @connection
+	guests: [Guest]! @connection(name: "GuestRole")
 }
 
 type Meal 
-@model
-@key(name: "byMealType", fields: ["typeId"]) {
+@model {
 	id: ID!
 	typeId: ID!
 	guest: Guest! @connection
-	type: MealType!
+	type: MealType! @connection(name: "MealMealType")
 	dietaryRestriction: Boolean!
 	dietaryRestrictionDescription: String
 	foodAllergy: Boolean!
@@ -55,5 +51,5 @@ type MealType
 	id: ID!
 	name: String!
 	description: String!
-	meals: [Meal]! @connection(keyName: "byMealType", fields: ["id"])
+	meals: [Meal]! @connection(name: "MealMealType")
 }

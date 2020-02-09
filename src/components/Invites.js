@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import ReactPhoneInput from 'react-phone-input-2';
-
 import styled from 'styled-components';
 import { Container, Card, CardBody, CardTitle, Button, Form, FormGroup, Label, Input, Row, Col, Table, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
@@ -27,6 +25,7 @@ query ListGroups($limit: Int) {
                 items {
                     firstNamePreferred
                     lastName
+                    plusOneEligible
                 }
             }
         }
@@ -44,6 +43,11 @@ const Invites = () => {
         background-color: var(--white);
         margin-top: 20px;
         margin-bottom: 20px;
+    `;
+
+    const CardScroll = styled.div`
+        max-height: 500px;
+        overflow: auto;
     `;
 
     // States
@@ -113,15 +117,16 @@ const Invites = () => {
                 next: (response) => {
 
                     let current = [...refGroups.current];
-                    const groupId = response.value.data.onCreateGuest.groupId;
+                    const groupId = response.value.data.onCreateGuest.group.id;
                     
                     // Update Group
                     current.forEach((group, index) => {
                         if (group.id === groupId) {
                             group.guests.items = [...group.guests.items, {
                                 id: response.value.data.onCreateGuest.id,
-                                firstName: response.value.data.onCreateGuest.firstName,
-                                lastName: response.value.data.onCreateGuest.lastName
+                                firstNamePreferred: response.value.data.onCreateGuest.firstNamePreferred,
+                                lastName: response.value.data.onCreateGuest.lastName,
+                                plusOneEligible: response.value.data.onCreateGuest.plusOneEligible
                             }];
                         }
                     });
@@ -168,125 +173,138 @@ const Invites = () => {
     return (
         <Container>
 
-            {/* Groups Card */}
-            <CardStyled>
-                <CardBody>
-                    <CardTitle>
-                        <Row>
-                            <Col xs='7'><h2>Groups</h2></Col>
-                            <Col xs='5'>
-                                <Button
-                                    color='primary'
-                                    className='float-right'
-                                    style={{ display: groupsLoaded ? "block" : "none" }}
-                                    onClick={toggleGroupsModal}
-                                >+ Create Group</Button>
-                            </Col>
-                        </Row>
-                    </CardTitle>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th style={{ width: "2%" }}>#</th>
-                                <th style={{ width: "20%"}}>Name</th>
-                                <th style={{ width: "30%"}}>Address</th>
-                                <th>Guests</th>
-                                <th style={{ width: device === "desktop" ? "150px" : "30px" }}></th>
-                            </tr>
-                        </thead>
-                        <tbody>{
-                            groups.sort((a, b) => a.number - b.number).map((d, i) => {
-                                return (
-                                    <tr key={i}>
-                                        <td className='align-middle'>{d.number}</td>
-                                        <td className='align-middle'>{d.name}</td>
-                                        <td className='align-middle' style={{ whiteSpace: "pre-line" }}>{d.address.replace(/;/g, "\n")}</td>
-                                        <td className='align-middle'>{d.guests.items.map((d) => `${d.firstNamePreferred} ${d.lastName}`).join(", ")}</td>
-                                        <td>
-                                            <Button 
-                                                color='secondary'
-                                                onClick={() => toggleGuestModal(d.id)}
-                                            >+{device === "desktop" ? " Add Guest" : ""}</Button>
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        }</tbody>
-                    </Table>
-                </CardBody>
-            </CardStyled>
+            <Row>
 
-            {/* Roles Card */}
-            <CardStyled>
-                <CardBody>
-                    <CardTitle>
-                        <Row>
-                            <Col xs='7'><h2>Roles</h2></Col>
-                            <Col xs='5'>
-                                <Button
-                                    color='primary'
-                                    className='float-right'
-                                    onClick={toggleRoleModal}
-                                >+ Create Role</Button>
-                            </Col>
-                        </Row>
-                    </CardTitle>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Role Name</th>
-                                <th>Wedding Party?</th>
-                            </tr>
-                        </thead>
-                        <tbody>{
-                            roles.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((d, i) => {
-                                return (
-                                    <tr key={i}>
-                                        <td>{d.name}</td>
-                                        <td>{d.weddingParty ? "Yes" : "No"}</td>
-                                    </tr>
-                                );
-                            })
-                        }</tbody>
-                    </Table>
-                </CardBody>
-            </CardStyled>
+                {/* Groups Card */}
+                <Col xs='12'>
+                    <CardStyled>
+                        <CardBody>
+                            <CardTitle>
+                                <Row>
+                                    <Col xs='7'><h2>Groups</h2></Col>
+                                    <Col xs='5'>
+                                        <Button
+                                            color='primary'
+                                            className='float-right'
+                                            style={{ display: groupsLoaded ? "block" : "none" }}
+                                            onClick={toggleGroupsModal}
+                                        >+ Create Group</Button>
+                                    </Col>
+                                </Row>
+                            </CardTitle>
+                            <CardScroll>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th style={{ width: "2%" }}>#</th>
+                                            <th style={{ width: "20%"}}>Name</th>
+                                            <th style={{ width: "30%"}}>Address</th>
+                                            <th>Guests</th>
+                                            <th style={{ width: device === "desktop" ? "150px" : "30px" }}></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>{
+                                        groups.sort((a, b) => b.number - a.number).map((d, i) => {
+                                            return (
+                                                <tr key={i}>
+                                                    <td className='align-middle'>{d.number}</td>
+                                                    <td className='align-middle'>{d.name}</td>
+                                                    <td className='align-middle' style={{ whiteSpace: "pre-line" }}>{d.address.replace(/;/g, "\n")}</td>
+                                                    <td className='align-middle'>{d.guests.items.map((d) => `${d.firstNamePreferred} ${d.lastName}${d.plusOneEligible ? " +1" : ""}`).join(", ")}</td>
+                                                    <td>
+                                                        <Button 
+                                                            color='secondary'
+                                                            onClick={() => toggleGuestModal(d.id)}
+                                                        >+{device === "desktop" ? " Add Guest" : ""}</Button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    }</tbody>
+                                </Table>
+                            </CardScroll>
+                        </CardBody>
+                    </CardStyled>
+                </Col>
 
-            {/* Meal Types Card */}
-            <CardStyled>
-                <CardBody>
-                    <CardTitle>
-                        <Row>
-                            <Col xs='7'><h2>Meal Types</h2></Col>
-                            <Col xs='5'>
-                                <Button
-                                    color='primary'
-                                    className='float-right'
-                                    onClick={toggleMealTypeModal}
-                                >+ New Meal Type</Button>
-                            </Col>
-                        </Row>
-                    </CardTitle>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>{
-                            mealTypes.map((d, i) => {
-                                return (
-                                    <tr key={i}>
-                                        <td>{d.name}</td>
-                                        <td>{d.description}</td>
+                {/* Roles Card */}
+                <Col xs='6'>
+                    <CardStyled>
+                        <CardBody>
+                            <CardTitle>
+                                <Row>
+                                    <Col xs='7'><h2>Roles</h2></Col>
+                                    <Col xs='5'>
+                                        <Button
+                                            color='primary'
+                                            className='float-right'
+                                            onClick={toggleRoleModal}
+                                        >+ Create Role</Button>
+                                    </Col>
+                                </Row>
+                            </CardTitle>
+                            <CardScroll>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>Role Name</th>
+                                            <th>Wedding Party?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>{
+                                        roles.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((d, i) => {
+                                            return (
+                                                <tr key={i}>
+                                                    <td>{d.name}</td>
+                                                    <td>{d.weddingParty ? "Yes" : "No"}</td>
+                                                </tr>
+                                            );
+                                        })
+                                    }</tbody>
+                                </Table>
+                            </CardScroll>
+                        </CardBody>
+                    </CardStyled>
+                </Col>
+
+                {/* Meal Types Card */}
+                <Col xs='6'>
+                    <CardStyled>
+                        <CardBody>
+                            <CardTitle>
+                                <Row>
+                                    <Col xs='7'><h2>Meal Types</h2></Col>
+                                    <Col xs='5'>
+                                        <Button
+                                            color='primary'
+                                            className='float-right'
+                                            onClick={toggleMealTypeModal}
+                                        >+ New Meal Type</Button>
+                                    </Col>
+                                </Row>
+                            </CardTitle>
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
                                     </tr>
-                                );
-                            })
-                        }</tbody>
-                    </Table>
-                </CardBody>
-            </CardStyled>
+                                </thead>
+                                <tbody>{
+                                    mealTypes.map((d, i) => {
+                                        return (
+                                            <tr key={i}>
+                                                <td>{d.name}</td>
+                                                <td>{d.description}</td>
+                                            </tr>
+                                        );
+                                    })
+                                }</tbody>
+                            </Table>
+                        </CardBody>
+                    </CardStyled>
+                </Col>
+            </Row>
 
             {/* Create New Group Modal */}
             <Modal isOpen={groupsModal} toggle={toggleGroupsModal}>
@@ -380,7 +398,7 @@ const CreateGuestForm = (props) => {
     const [firstName, setFirstName] = useState("");
     const [firstNamePreferred, setFirstNamePreferred] = useState("");
     const [lastName, setLastName] = useState("");
-    const [role, setRole] = useState(null);
+    const [role, setRole] = useState(props.roles.filter((d) => d.name == "Guest").id);
     const [plusOneEligible, setPlusOneEligible] = useState(false);
 
     // Guest Form Submit
@@ -393,10 +411,10 @@ const CreateGuestForm = (props) => {
                         firstName: firstName,
                         firstNamePreferred: firstNamePreferred.length > 0 ? firstNamePreferred : firstName,
                         lastName: lastName,
-                        groupId: props.groupId,
                         directInvite: true,
-                        roleId: role,
-                        plusOneEligible: plusOneEligible
+                        plusOneEligible: plusOneEligible,
+                        guestGroupId: props.groupId,
+                        guestRoleId: role
                     }
                 }
             ));
@@ -418,8 +436,12 @@ const CreateGuestForm = (props) => {
             <FormGroup>
                 <Label for='role'>Role</Label>
                 <Input type='select' name='role' id='role' value={role} onChange={(e) => setRole(e.target.value)}>
-                    <option value={null}>Guest</option>
-                    {props.roles.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((d, i) => <option value={d.id}>{d.name}</option>)}
+                    {props.roles.sort((a, b) => {
+                        if (a.name == "Guest") return -1;
+                        if (b.name == "Guest") return 1;
+                        if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+                        return 1;
+                    }).map((d, i) => <option key={i} value={d.id}>{d.name}</option>)}
                 </Input>
             </FormGroup>
             <FormGroup check>
@@ -497,6 +519,8 @@ const CreateMealTypeForm = (props) => {
         <Form onKeyPress={(e) => e.which === 13 ? mealTypeFormSubmit(e) : null}>
             <FormGroup>
                 <Input type='text' name='meal-name' id='meal-name' value={mealName} onChange={(e) => setMealName(e.target.value)} placeholder='Meal Name' />
+            </FormGroup>
+            <FormGroup>
                 <Input type='text' name='meal-description' id='meal-description' value={mealDescription} onChange={(e) => setMealDescription(e.target.value)} placeholder='Meal Description' />
             </FormGroup>
             <Button onClick={mealTypeFormSubmit}>Create Meal</Button>
